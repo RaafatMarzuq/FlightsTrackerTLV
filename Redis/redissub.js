@@ -1,16 +1,33 @@
 const Redis = require('ioredis');
+const RedisAdapter = require('../Redis/redisRWAdapter')
+// From Dashboard to Redis
 
-const redis = new Redis();
-
+// Connection details
+const conn = {
+    port: 3002,
+    host: "127.0.0.1",
+    db: 0
+};
+const redis = new Redis(conn);
 const channel = 'messages';
 
-redis.on('message', (channel, message) => {
-    console.log(`Received the following message from ${channel}: ${message}`);
-});
-
+// Subscribe to channel
 redis.subscribe(channel, (error, count) => {
     if (error) {
         throw new Error(error);
     }
-    console.log(`Subscribed to ${count} channel. Listening for updates on the ${channel} channel.`);
 });
+
+// Function that listen to changes in channel "messages" 
+async function getData(){
+   redis.removeAllListeners();
+    return new Promise (res=>{
+        redis.on('message',async (channel, message) => {
+            res(message);
+        });
+    });
+}
+   
+
+module.exports.getData=getData;
+

@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<!--
+    https://www.bingmapsportal.com/Application#    
+    https://www.bing.com/api/maps/sdk/mapcontrol/isdk/loadmapasync#JS
+    https://docs.microsoft.com/en-us/bingmaps/v8-web-control/map-control-concepts/pushpins/custom-image-pushpin-example    
+    https://www.bigdatacloud.com/geocoding-apis
+-->
+<html>
+
+<head>
+    <title>מעק טיסות נתב"ג</title>
+    <meta charset="utf-8" />
+    <script type="text/javascript">
+
+        var map = null;
+        function setMap() {
+            // socket.on('newdata', function (msg) {
+            //       var element = document.getElementById(msg.districtId);
+            //       element.innerText = msg.value;})
+            // Initialize the map - USE YOUR OWN KEY !
+            map = new Microsoft.Maps.Map(document.getElementById("myMap"),
+             { credentials: "Am7ABZsl1hVs093AjZV82C3wxd-NCQ-KtBLpdtv4uB1UBvqIx7vcgN7Dw1A9RpQt" });
+                document.getElementById("depFlightsNumber").innerText = 1 ;
+                document.getElementById("arrFlightsNumber").innerText = 1 ;
+                
+        }
+        </script>
+    <div class="row">
+        <div class="column" onclick="openTab('b1');" style="background:green;">טיסות ממתינות לנחיתה
+            <h1 id="arrFlightsNumber"></h1>
+        </div>
+        <div class="column" onclick="openTab('b2');" style="background:blue;">טיסות ממתינות להמראה
+            <h1 id="depFlightsNumber"></h1>
+        </div>
+        <div class="column" onclick="openTab('b3');" style="background:red;">מזג אוויר
+            <h1 id="Weather"></h1>
+        </div>
+      </div>
+      
+      <!-- The expanding grid (hidden by default) -->
+      <div id="b1" class="containerTab" style="display:none;background:green">
+        <!-- If you want the ability to close the container, add a close button -->
+        <span onclick="this.parentElement.style.display='none'" class="closebtn">x</span>
+        <h2>טיסות ממתינות לנחיתה
+           
+        </h2>
+        <p>Lorem ipsum..</p>
+      </div>
+      
+      <div id="b2" class="containerTab" style="display:none;background:blue">
+        <span onclick="this.parentElement.style.display='none'" class="closebtn">x</span>
+        <h2>טיסות ממתינות להמראה
+            
+        </h2>
+        <p></p>
+      </div>
+      
+      <div id="b3" class="containerTab" style="display:none;background:red">
+        <span onclick="this.parentElement.style.display='none'" class="closebtn">x</span>
+        <h2>מזג אוויר</h2>
+        <p>Lorem ipsum..</p>
+      </div>
+      <style>
+        .column {
+            float: left;
+            width: 25%;
+            padding: 50px;
+            text-align: center;
+            font-size: 25px;
+            cursor: pointer;
+            color: white;
+            }
+
+            .containerTab {
+            padding: 20px;
+            color: white;
+            }
+
+            /* Clear floats after the columns */
+            .row:after {
+            content: "";
+            display: table;
+            clear: both;
+            }
+
+            /* Closable button inside the image */
+            .closebtn {
+            float: right;
+            color: white;
+            font-size: 35px;
+            cursor: pointer;
+            }
+      </style>
+    <script>
+        function openTab(tabName) {
+            var i, x;
+            x = document.getElementsByClassName("containerTab");
+            for (i = 0; i < x.length; i++) {
+                x[i].style.display = "none";
+            }
+            document.getElementById(tabName).style.display = "block";
+        }
+    </script>
+<div style="padding-top : 20px;
+            padding-right: 100px;
+            padding-bottom: 100px;
+            padding-left: 300px;
+            width: 1000px;
+            height: 500px;">
+                
+<script type='text/javascript'
+src='http://www.bing.com/api/maps/mapcontrol?callback=GetMap&key=Am7ABZsl1hVs093AjZV82C3wxd-NCQ-KtBLpdtv4uB1UBvqIx7vcgN7Dw1A9RpQt'
+async defer></script>
+
+
+
+<script type='text/javascript'>
+function add(){
+    var loc1 = new Microsoft.Maps.Location(37.983810,23.727539);
+    var loc2 = new Microsoft.Maps.Location(32.817280,34.988762);
+    var loc3 = new Microsoft.Maps.Location(30.044420, 31.235712);
+    var loc4 = new Microsoft.Maps.Location(35.0, 30.0);
+  
+    // Add a pin to the map
+    var pin1 = new Microsoft.Maps.Pushpin(loc1);
+    var pin2 = new Microsoft.Maps.Pushpin(loc2);
+    var pin3 = new Microsoft.Maps.Pushpin(loc3);
+    
+    pin4 = new Microsoft.Maps.Pushpin(loc4, {
+        icon: 'airplane.png',
+        anchor: new Microsoft.Maps.Point(10, 10)
+    });
+   
+    // Create a polyline
+    var lineVertices = new Array(loc1, loc2);
+    var line = new Microsoft.Maps.Polyline(lineVertices);
+
+    map.setView({ center: loc2, zoom: 4 });
+
+    map.entities.push(line);
+    map.entities.push(pin1);
+    map.entities.push(pin2);
+    map.entities.push(pin3);
+    map.entities.push(pin4);
+   
+
+}
+function move() {
+    for (var i = map.entities.getLength() - 1; i >= 0; i--) {
+        var pushpin = map.entities.get(i);
+        if (pushpin instanceof Microsoft.Maps.Pushpin) {
+            map.entities.removeAt(i);
+        }
+    }
+}       
+
+</script>
+</head>
+
+<body onload="setMap()">
+<div id="myMap" >
+
+</div>
+<input type="button" onclick="add()" value="הוסף אייקונים" />
+<input type="button" onclick="move()" value="הסר אייקונים" />
+</body>
+</body>
+</div>

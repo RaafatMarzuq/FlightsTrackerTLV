@@ -19,6 +19,7 @@
     "mysql": "^2.18.1",
     "node-rdkafka": "^2.13.0",
     "nodemon": "^2.0.4",
+    "notenv": "^2.0.3",
     "request": "^2.88.2",
     "socket.io": "^2.3.0",
     "utf-8-validate": "^5.0.2",

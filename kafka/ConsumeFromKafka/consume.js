@@ -2,8 +2,9 @@ require('dotenv').config();
 
 const uuid = require("uuid");
 const Kafka = require("node-rdkafka");
+
 const redis = require(`../../Redis/redisRWAdapter`)
-const MongoDB = require("../../MongoDB/MongoDB")
+// const MongoDB = require("../../MongoDB/MongoDB")
 const kafkaConf = {
   "group.id": "kafka",
   "metadata.broker.list": "tricycle-01.srvs.cloudkafka.com:9094,tricycle-02.srvs.cloudkafka.com:9094,tricycle-03.srvs.cloudkafka.com:9094".split(","),
@@ -11,7 +12,7 @@ const kafkaConf = {
   "security.protocol": "SASL_SSL",
   "sasl.mechanisms": "SCRAM-SHA-256",
   "sasl.username": `${process.env.KAFKA_USERNAME}`,
-  "sasl.password": `${process.env.KAFKA_PASSWORD}`,
+  "sasl.password":`${process.env.KAFKA_PASSWORD}`,
   "debug": "generic,broker,security"
 };
 const prefix = "w63twr24-";
@@ -35,14 +36,16 @@ consumer.on("ready", function(arg) {
   consumer.consume();
 });
 
-module.exports.consume = ()=>{
+module.exports.consume = consume
+function consume(){
   consumer.on("data", function(m) {
     // insert into MongoDB and Redis
     redis.FromKafkaToRedis(m.value);
-    MongoDB.insertToMongoDB(m.value);
+    // MongoDB.insertToMongoDB(m.value);
+    
   });
 }
-
+consume();
 consumer.on('event.error', function(err) {
   console.error(err);
   process.exit(1);
