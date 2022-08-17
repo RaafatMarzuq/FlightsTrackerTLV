@@ -73,8 +73,7 @@ function getPeriod(){
         })
     })
 }
-// getPeriod()
-// getWeather('');
+
 module.exports.getFlights = getFlights;
 module.exports.getWeather = getWeather;
 module.exports.flightINFO= flightINFO;

@@ -10,30 +10,71 @@
 <head>
     <title>מעק טיסות נתב"ג</title>
     <meta charset="utf-8" />
+    <script src="/socket.io/socket.io.js"></script>
     <script type="text/javascript">
-
+        var socket = io.connect();
         var map = null;
         function setMap() {
-            // socket.on('newdata', function (msg) {
-            //       var element = document.getElementById(msg.districtId);
-            //       element.innerText = msg.value;})
-            // Initialize the map - USE YOUR OWN KEY !
+
             map = new Microsoft.Maps.Map(document.getElementById("myMap"),
              { credentials: "Am7ABZsl1hVs093AjZV82C3wxd-NCQ-KtBLpdtv4uB1UBvqIx7vcgN7Dw1A9RpQt" });
-                document.getElementById("depFlightsNumber").innerText = 1 ;
-                document.getElementById("arrFlightsNumber").innerText = 1 ;
+
+            socket.on('flights counter', function (msg) {
+                // 
+                document.getElementById("arrFlightsNumber").innerText = msg['arrFlightsSum'] ;
+                document.getElementById("depFlightsNumber").innerText = msg['depFlightsSum'];
+            })
+            socket.on('flights data', function (msg1,msg2) {
+            //   alert(msg1)
+                document.getElementById("arrFlightsData").innerText = msg1 ;
+                document.getElementById("depFlightsData").innerText = msg2  ;
+            })
+
+            
+            // Initialize the map - USE YOUR OWN KEY !
+           
+            
+            // adding airplanes pin tp the map 
+            add();
                 
         }
+
+        </script>
+        <script type='text/javascript'>
+            function add(){
+        
+                socket.on('flights location', function (location) {
+        
+                    move();
+                    for (let i = 0; i < location.length; i++) {
+                        const element = location[i];
+                        var loc1 = new Microsoft.Maps.Location(element.lat,element.lng);
+                        var pin1 = new Microsoft.Maps.Pushpin(loc1);
+                        map.entities.push(pin1);
+                    }   
+                    
+                })
+                setTimeout(add,10000);
+            }
+            function move() {
+                for (var i = map.entities.getLength() - 1; i >= 0; i--) {
+                    var pushpin = map.entities.get(i);
+                    if (pushpin instanceof Microsoft.Maps.Pushpin) {
+                        map.entities.removeAt(i);
+                    }
+                }
+            }       
+        
         </script>
     <div class="row">
         <div class="column" onclick="openTab('b1');" style="background:green;">טיסות ממתינות לנחיתה
-            <h1 id="arrFlightsNumber"></h1>
+            <p id="arrFlightsNumber"></p>
         </div>
         <div class="column" onclick="openTab('b2');" style="background:blue;">טיסות ממתינות להמראה
-            <h1 id="depFlightsNumber"></h1>
+            <p id="depFlightsNumber"></p>
         </div>
-        <div class="column" onclick="openTab('b3');" style="background:red;">מזג אוויר
-            <h1 id="Weather"></h1>
+        <div class="column"  style="background:red;">מזג אוויר
+            <p id="Weather"></p>
         </div>
       </div>
       
@@ -42,23 +83,21 @@
         <!-- If you want the ability to close the container, add a close button -->
         <span onclick="this.parentElement.style.display='none'" class="closebtn">x</span>
         <h2>טיסות ממתינות לנחיתה
-           
         </h2>
-        <p>Lorem ipsum..</p>
+        <p id="arrFlightsData"></p>
       </div>
       
       <div id="b2" class="containerTab" style="display:none;background:blue">
         <span onclick="this.parentElement.style.display='none'" class="closebtn">x</span>
         <h2>טיסות ממתינות להמראה
-            
         </h2>
-        <p></p>
+        <p  id="depFlightsData"></p>
       </div>
       
       <div id="b3" class="containerTab" style="display:none;background:red">
         <span onclick="this.parentElement.style.display='none'" class="closebtn">x</span>
         <h2>מזג אוויר</h2>
-        <p>Lorem ipsum..</p>
+        <h4 id="weather"></h4>
       </div>
       <style>
         .column {
@@ -108,53 +147,10 @@
             width: 1000px;
             height: 500px;">
                 
-<script type='text/javascript'
-src='http://www.bing.com/api/maps/mapcontrol?callback=GetMap&key=Am7ABZsl1hVs093AjZV82C3wxd-NCQ-KtBLpdtv4uB1UBvqIx7vcgN7Dw1A9RpQt'
-async defer></script>
-
-
-
-<script type='text/javascript'>
-function add(){
-    var loc1 = new Microsoft.Maps.Location(37.983810,23.727539);
-    var loc2 = new Microsoft.Maps.Location(32.817280,34.988762);
-    var loc3 = new Microsoft.Maps.Location(30.044420, 31.235712);
-    var loc4 = new Microsoft.Maps.Location(35.0, 30.0);
-  
-    // Add a pin to the map
-    var pin1 = new Microsoft.Maps.Pushpin(loc1);
-    var pin2 = new Microsoft.Maps.Pushpin(loc2);
-    var pin3 = new Microsoft.Maps.Pushpin(loc3);
-    
-    pin4 = new Microsoft.Maps.Pushpin(loc4, {
-        icon: 'airplane.png',
-        anchor: new Microsoft.Maps.Point(10, 10)
-    });
-   
-    // Create a polyline
-    var lineVertices = new Array(loc1, loc2);
-    var line = new Microsoft.Maps.Polyline(lineVertices);
-
-    map.setView({ center: loc2, zoom: 4 });
-
-    map.entities.push(line);
-    map.entities.push(pin1);
-    map.entities.push(pin2);
-    map.entities.push(pin3);
-    map.entities.push(pin4);
-   
-
-}
-function move() {
-    for (var i = map.entities.getLength() - 1; i >= 0; i--) {
-        var pushpin = map.entities.get(i);
-        if (pushpin instanceof Microsoft.Maps.Pushpin) {
-            map.entities.removeAt(i);
-        }
-    }
-}       
+<script type='text/javascript' src='http://www.bing.com/api/maps/mapcontrol?callback=GetMap&key=Am7ABZsl1hVs093AjZV82C3wxd-NCQ-KtBLpdtv4uB1UBvqIx7vcgN7Dw1A9RpQt'async defer>
 
 </script>
+
 </head>
 
 <body onload="setMap()">

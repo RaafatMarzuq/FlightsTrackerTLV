@@ -4,15 +4,15 @@ const uuid = require("uuid");
 const Kafka = require("node-rdkafka");
 
 const redis = require(`../../Redis/redisRWAdapter`)
-// const MongoDB = require("../../MongoDB/MongoDB")
+const MongoDB = require("../../MongoDB/MongoDB")
 const kafkaConf = {
   "group.id": "kafka",
   "metadata.broker.list": "tricycle-01.srvs.cloudkafka.com:9094,tricycle-02.srvs.cloudkafka.com:9094,tricycle-03.srvs.cloudkafka.com:9094".split(","),
   "socket.keepalive.enable": true,
   "security.protocol": "SASL_SSL",
   "sasl.mechanisms": "SCRAM-SHA-256",
-  "sasl.username": `${process.env.KAFKA_USERNAME}`,
-  "sasl.password":`${process.env.KAFKA_PASSWORD}`,
+  "sasl.username": "w63twr24",
+  "sasl.password":"aFBdS6zxflHeaCif4m8rnF4GFjhhc6Zp",
   "debug": "generic,broker,security"
 };
 const prefix = "w63twr24-";
@@ -41,7 +41,7 @@ function consume(){
   consumer.on("data", function(m) {
     // insert into MongoDB and Redis
     redis.FromKafkaToRedis(m.value);
-    // MongoDB.insertToMongoDB(m.value);
+    MongoDB.insertToMongoDB(m.value);
     
   });
 }

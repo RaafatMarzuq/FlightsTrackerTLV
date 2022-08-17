@@ -36,17 +36,7 @@ async function FromRedisToDashboard(){
     return data;
 }
 
-// Function that flush the Redis database every 00:00 at night.
-function TimeTL(){
-    var today = new Date();
-    var TimeInSec = parseInt(today.getHours()*60*60) + parseInt(today.getMinutes()*60) + parseInt(today.getSeconds());
-    if(TimeInSec == 0){
-        redisDb.flushall("async");
-    }
-    var Yemama = 86400000 - TimeInSec*1000;
-    setTimeout(TimeTL,Yemama);
-}
-TimeTL();
+
 
 // Function that write data from kafka to Redis
 async function FromKafkaToRedis(result){
@@ -56,10 +46,7 @@ async function FromKafkaToRedis(result){
     await redisDb.hmset(key,result); // insert data to Redis as hash-map
 }
 
-// Flush database from Redis- for dashboard button. that uses at the subscriber.
-module.exports.flushAll = ()=>{
-    redisDb.flushdb("async");
-}
+
 
 module.exports.FromKafkaToRedis= FromKafkaToRedis;
 module.exports.FromRedisToDashboard= FromRedisToDashboard;

@@ -11,8 +11,8 @@ const kafkaConf = {
   "socket.keepalive.enable": true,
   "security.protocol": "SASL_SSL",
   "sasl.mechanisms": "SCRAM-SHA-256",
-  "sasl.username": `${process.env.KAFKA_USERNAME}`,
-  "sasl.password": `${process.env.KAFKA_PASSWORD}`,
+  "sasl.username": "w63twr24",
+  "sasl.password":"aFBdS6zxflHeaCif4m8rnF4GFjhhc6Zp",
   "debug": "generic,broker,security"
 };
 
@@ -31,8 +31,6 @@ producer.connect();
 
 module.exports.publish= function (msg){   
   m=JSON.stringify(msg);
-  console.log(m); 
-
   producer.produce(topic, -1, genMessage(m), uuid.v4());     
 }
 

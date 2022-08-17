@@ -28,7 +28,7 @@ function createModel(){
     }
   });
 }
-async function predictTopic(flightNumber,period,airline,departureAirport,arrivalAirport,typeOfFlight,departureWeahter,arrivalWeather){
+async function predictTopic(flightNumber,month,day,period,airline,departureAirport,arrivalAirport,typeOfFlight,departureWeahter,arrivalWeather){
     
   return await new Promise( res =>{
     var connection = new bigml.BigML('RaafatMarzuq','2a5da361441e10eaee2258ad814e5f2d764181b0')
@@ -43,6 +43,8 @@ async function predictTopic(flightNumber,period,airline,departureAirport,arrival
           var predictionInput= {
             flightNumber :flightNumber,
             period: period,
+            month : month,
+            day : day,
             airline : airline,
             departureAirport : departureAirport,
             arrivalAirport : arrivalAirport,

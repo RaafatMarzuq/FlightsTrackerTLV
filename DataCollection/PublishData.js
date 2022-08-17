@@ -43,7 +43,7 @@ async function publishAndStor(){
 
                 departureWeahter  = await data.getWeather("tel aviv") ;
                 arrivalWeather = await data.getWeather("tel aviv");
-                typeOfFlight = 'long';
+                typeOfFlight = 'short';
 
                 const allData = {
                     flightNumber :flightInfo.data.response.flight_number,
@@ -60,9 +60,9 @@ async function publishAndStor(){
                     alt : flightInfo.data.response.alt
 
                 }
-                // sql.insertToDatabase(allData);
-                console.log(allData)
-                console.log("befor publishing to kafka")
+                sql.insertToDatabase(allData);
+                // console.log(allData)
+                // console.log("befor publishing to kafka")
                 kafka.publish(allData);
             }
 

@@ -8,7 +8,7 @@ function connect(){
     var con = mysql.createConnection({
       host: "localhost",
       user: "root",
-      password: `${process.env.SQL_PASSWORD}`,
+      password: 'R0546379423m',
       database: 'flightsData'
     });
     
@@ -16,7 +16,7 @@ function connect(){
   }
 
 function insertToDatabase(data){
-    console.log(data);
+  
     var con= connect();
     const period =data.period;
     const airline = data.airline
