@@ -1,5 +1,8 @@
 {
+  "devDependencies": {
+    "bigml": "^1.25.2"
+  },
   "dependencies": {
-    "bigml": "^1.25.0"
+    "ml-confusion-matrix": "^0.4.0"
   }
 }
