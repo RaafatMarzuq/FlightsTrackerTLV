@@ -28,7 +28,7 @@ function createModel(){
     }
   });
 }
-async function predictTopic(flightNumber,month,day,period,airline,departureAirport,arrivalAirport,typeOfFlight,departureWeahter,arrivalWeather){
+async function predictTopic(flightNumber,period,month,day,airline,departureAirport,arrivalAirport,typeOfFlight,departureWeahter,arrivalWeather){
     
   return await new Promise( res =>{
     var connection = new bigml.BigML('RaafatMarzuq','2a5da361441e10eaee2258ad814e5f2d764181b0')
@@ -54,7 +54,7 @@ async function predictTopic(flightNumber,month,day,period,airline,departureAirpo
         }
         var prediction =  new bigml.Prediction(connection);
         
-        prediction.create('model/62fbfbc28f679a713b002681',predictionInput, async function(error, prediction) {
+        prediction.create('model/6300ab341ca2060c68000cc1',predictionInput, async function(error, prediction) {
           if(error) throw error;
           
           
@@ -80,13 +80,16 @@ async function predictTopic(flightNumber,month,day,period,airline,departureAirpo
 }) 
 }
 
-async function GetPred(flightNumber,period,airline,departureAirport,arrivalAirport,typeOfFlight,departureWeahter,arrivalWeather){
-  var ans = await predictTopic(flightNumber,period,airline,departureAirport,arrivalAirport,typeOfFlight,departureWeahter,arrivalWeather);
+async function GetPred(flightNumber,period,month,day,airline,departureAirport,arrivalAirport,typeOfFlight,departureWeahter,arrivalWeather){
+  
+  var ans = await predictTopic(flightNumber,period,month,day,airline,departureAirport,arrivalAirport,typeOfFlight,departureWeahter,arrivalWeather);
+ 
   return ans;
 }
 
 
-// GetPred("740","summer","AIZ","CDG","TLV","long","29.98","29.98");
+// GetPred("740","summer","april",8,"AIZ","CDG","TLV","long","29.98","29.98").then(res=> console.log(res));
+createModel()
 // module.exports.predictTopic= predictTopic;
 module.exports.GetPred = GetPred;
 module.exports.createModel=createModel;

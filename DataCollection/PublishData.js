@@ -40,9 +40,27 @@ async function publishAndStor(){
                 }else{
                     arrivalStatus = 'severely Delayed'
                 }
+                data.getCity(departureAirport).then( res =>{
+                    if(res[0]){
+                        data.getWeather(res[0].name).then(ans=>{
+                        departureWeahter = ans  ;
+                                      }) ;
+                    }
+                    
+                }
+                )
 
-                departureWeahter  = await data.getWeather("tel aviv") ;
-                arrivalWeather = await data.getWeather("tel aviv");
+                data.getCity(arrivalAirport).then(res =>{
+                    // console.log(res[0])
+                    if(res[0]){
+                        data.getWeather(res[0].name).then(ans =>{
+                         arrivalWeather =ans
+                    })
+                    }
+                    
+                })
+                
+                // console.log(`arrWEATHE = ${arrivalWeather}\nDEPweather = ${departureWeahter}`)
                 typeOfFlight = 'short';
 
                 const allData = {
@@ -69,7 +87,7 @@ async function publishAndStor(){
         }
     }
     
-        
+       setTimeout(publishAndStor,10000) 
 }
 
 

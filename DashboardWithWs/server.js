@@ -18,33 +18,45 @@ function updateNewData(){
     var data = JSON.parse(res);
     // console.log(`data = ${data}`)
     var flights_counter = getFlightsNumber(data);
-  
-     getFlightsDataByNumber(data,flights_counter.arrFlightsNumber).then(arr_flights_data=>{
-      getFlightsDataByNumber(data,flights_counter.depFlightsNumber).then(dep_flights_data=>{
-        
-        io.emit('flights data', arr_flights_data,dep_flights_data);
-      })
-     }
+    
 
-     );
+    
+
+    var arr_flights_data = getFlightsDataByNumber(data,flights_counter.arrFlightsNumber);
+    var dep_flights_data =   getFlightsDataByNumber(data,flights_counter.depFlightsNumber);
+       
+   stringfyData(arr_flights_data).then(res1 => {
+
+    stringfyData(dep_flights_data ).then(res2 =>{
+      io.emit('flights data',res1  , res2);
+    })
+    
+        
+   })
+   
+  
+     
+
+     
  
     var airplains_location= getLngLat(data);
     
-    // console.log(`flight counter = ${flights_counter}`)
-    // console.log(`arr_flights_data = ${arr_flights_data}`)
-    // console.log(`dep_flights_data = ${dep_flights_data}`)
-    // console.log(`airplains_location = ${airplains_location}`)
     
-       
+    
+    var TLVweather = getTLVWeather(data,flights_counter.arrFlightsNumber);
+    io.emit('weather',TLVweather);
       
     
-    // console.log(JSON.stringify(flightsData['arrFlightsdata']))
+   
     // Updating new data by using socket.io
     io.emit('flights counter', flights_counter);
-    // io.emit('flights data', arr_flights_data,dep_flights_data);
+   
     io.emit('flights location', airplains_location);
+
   });
-  setTimeout(updateNewData,1000);
+ 
+
+  setTimeout(updateNewData,10000);
 }
 
 app.get('/', (req, res) => {
@@ -58,7 +70,8 @@ function getLngLat(data){
     const element = data[index];
     const lngLat = {
       lat : element.lat,
-      lng : element.lng
+      lng : element.lng,
+      flightNumber : element.flightNumber
     }
     locations.push(lngLat);
   }
@@ -66,7 +79,6 @@ function getLngLat(data){
 }
 function getFlightsNumber(data){
   
-    
   var arr_flights_sum=0,dep_flights_sum=0;
   var arr_flights_number=[],dep_flights_number = [];
   for (let index = 0; index < data.length; index++) {
@@ -87,7 +99,7 @@ function getFlightsNumber(data){
     return output;
 }
 
-async function getFlightsDataByNumber(data,flights){
+ function getFlightsDataByNumber(data,flights){
   
   var flighits_data =[] ;
   for (let i = 0; i < flights.length; i++) {
@@ -102,47 +114,75 @@ async function getFlightsDataByNumber(data,flights){
         typeOfFlight : data[j].typeOfFlight,
         departureWeahter : data[j].departureWeahter,
         arrivalWeather : data[j].arrivalWeather,
-        // arrivalStatus :  getArrivalStatus(data[j].flightNumber,data[j].period,data[j].airline,data[j].departureAirport,data[j].arrivalAirport,typeOfFlight,data[j].departureWeahter,data[j].arrivalWeather)
+       
       }
       flighits_data.push(obj);
     }
       
     }
   }
-  var str = "";
+     return flighits_data;
+}
+
+async function stringfyData(flighits_data){
+  let str;
   const weekday = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
   const d = new Date();
   let day = weekday[d.getDay()];
   const m = ["January","February","March","April","May","June","July","August","September","October","November","December"];
   let month = m[d.getMonth()];
-
   for (let k= 0; k< flighits_data.length; k++) {
-  //  await getArrivalStatus(flighits_data[k]['flightNumber'],month,day,flighits_data[k]['airline'],flighits_data[k]['departureAirport'],flighits_data[k]['arrivalAirport'],flighits_data[k]['typeOfFlight'],flighits_data[k]['departureWeahter'],flighits_data[k]['arrivalWeather']).then(res=>{
-
-      str += `Flight Number is ${flighits_data[k]['flightNumber']}
+    if(flighits_data[k]['flightNumber'] 
+            && flighits_data[k]['airline'] 
+            && flighits_data[k]['departureAirport']
+            && flighits_data[k]['departureAirport'] 
+            && flighits_data[k]['arrivalAirport']
+            && flighits_data[k]['departureWeahter']
+            && flighits_data[k]['arrivalWeather']
+            && flighits_data[k]['typeOfFlight'] ){
+             
+             await getArrivalStatus(flighits_data[k]['flightNumber'],month,day, flighits_data[k]['airline'], flighits_data[k]['departureAirport']
+             , flighits_data[k]['departureAirport'] 
+            ,flighits_data[k]['arrivalAirport'],flighits_data[k]['typeOfFlight']
+            ,flighits_data[k]['departureWeahter']
+             ,flighits_data[k]['arrivalWeather']
+             ).then(res=>{
+        str += `Flight Number is ${flighits_data[k]['flightNumber']}
           Airline : ${flighits_data[k]['airline']}
           Departure Airport : ${flighits_data[k]['departureAirport']}
           Arrival Airport : ${flighits_data[k]['arrivalAirport']}
           Departure Weahter : ${flighits_data[k]['departureWeahter']}
           Arrival Weather : ${flighits_data[k]['arrivalWeather']}
-          The flight will be ${"res"}
+          The flight will be ${res}
           
           `;
+             })
 
-  //  })
-   
-    
+  } 
   }
-  console.log(str)
+   
+  // console.log(str)
   return str;
-
 }
-
-async function getArrivalStatus(flightNumber,period,airline,departureAirport,arrivalAirport,typeOfFlight,departureWeahter,arrivalWeather){
+  
+ 
+async function getArrivalStatus(flightNumber,period,month,day,airline,departureAirport,arrivalAirport,typeOfFlight,departureWeahter,arrivalWeather){
   Mongo.exportToCsv();   
-  const ans = await BigML.GetPred(flightNumber,period,airline,departureAirport,arrivalAirport,typeOfFlight,departureWeahter,arrivalWeather)
+  const ans = await BigML.GetPred(flightNumber,period,month,day,airline,departureAirport,arrivalAirport,typeOfFlight,departureWeahter,arrivalWeather)
+ 
   return ans;
 }
+
+function getTLVWeather(data,arrFlightsNumber){
+ 
+    for (let j = 0; j < data.length; j++) {
+    if (data[j].flightNumber == arrFlightsNumber[0]) {
+      return data[j].arrivalWeather;      
+    }
+      
+    }
+}
+
 const server = express()
   .use(app)
   .listen(3000, () => console.log(`Listening Socket on http://localhost:3000`));

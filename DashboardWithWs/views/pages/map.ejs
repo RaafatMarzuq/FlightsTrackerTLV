@@ -15,7 +15,12 @@
         var socket = io.connect();
         var map = null;
         function setMap() {
-
+            setClock();
+            socket.on('weather', function (msg) {
+                // 
+                document.getElementById("Weather").innerText = msg ;
+                
+            })
             map = new Microsoft.Maps.Map(document.getElementById("myMap"),
              { credentials: "Am7ABZsl1hVs093AjZV82C3wxd-NCQ-KtBLpdtv4uB1UBvqIx7vcgN7Dw1A9RpQt" });
 
@@ -26,18 +31,38 @@
             })
             socket.on('flights data', function (msg1,msg2) {
             //   alert(msg1)
-                document.getElementById("arrFlightsData").innerText = msg1 ;
+                document.getElementById("arrFlightsData").innerText = msg1;
+                
                 document.getElementById("depFlightsData").innerText = msg2  ;
             })
 
-            
-            // Initialize the map - USE YOUR OWN KEY !
-           
-            
-            // adding airplanes pin tp the map 
             add();
                 
         }
+        function setClock() {
+            const date = Date.now();
+            const dateTimeFormat = new Intl.DateTimeFormat('en', {
+                    year: 'numeric',
+                    month: 'short',
+                    day: '2-digit',
+                    hour: 'numeric',
+                    minute: 'numeric'
+                    })
+            var element = document.getElementById("time");
+                    const [{
+                    value: month
+                    }, , {
+                    value: day
+                    }, , {
+                    value: year
+                    }, , {
+                    value: hour
+                    }, , {
+                    value: minute
+                    }] = dateTimeFormat.formatToParts(date)
+            element.innerText = `${hour}:${minute}  ${day}-${month}-${year} `;
+            setTimeout(setClock, 1000);
+      }
 
         </script>
         <script type='text/javascript'>
@@ -48,14 +73,48 @@
                     move();
                     for (let i = 0; i < location.length; i++) {
                         const element = location[i];
+                    
                         var loc1 = new Microsoft.Maps.Location(element.lat,element.lng);
                         var pin1 = new Microsoft.Maps.Pushpin(loc1);
-                        map.entities.push(pin1);
-                    }   
+                       //Create an infobox at the center of the map but don't show it.
+                        infobox = new Microsoft.Maps.Infobox(loc1, {
+                            visible: false
+                        });
+
+                        //Assign the infobox to a map instance.
+                        infobox.setMap(map);
+
+                       
+                        pin1.metadata = {
+                            title: `${element.flightNumber}`, 
+                        };
+
+                        //Add a click event handler to the pushpin.
+                        Microsoft.Maps.Events.addHandler(pin1, 'click', pushpinClicked);
+
+                                    
+                                    map.entities.push(pin1);                                
+                        }   
                     
-                })
+                      
+                }) 
+                
                 setTimeout(add,10000);
             }
+
+
+            function pushpinClicked(e) {
+                //Make sure the infobox has metadata to display.
+                if (e.target.metadata) {
+                    //Set the infobox options with the metadata of the pushpin.
+                    infobox.setOptions({
+                        location: e.target.getLocation(),
+                        title: e.target.metadata.title,
+                        description: e.target.metadata.description,
+                        visible: true
+                    });
+                }
+              }
             function move() {
                 for (var i = map.entities.getLength() - 1; i >= 0; i--) {
                     var pushpin = map.entities.get(i);
@@ -73,8 +132,9 @@
         <div class="column" onclick="openTab('b2');" style="background:blue;">טיסות ממתינות להמראה
             <p id="depFlightsNumber"></p>
         </div>
-        <div class="column"  style="background:red;">מזג אוויר
-            <p id="Weather"></p>
+        <div class="column"  style="background:red;">מזג אוויר 
+             <p id="Weather"></p>
+             <h4 id="time"></h4> 
         </div>
       </div>
       
@@ -157,8 +217,7 @@
 <div id="myMap" >
 
 </div>
-<input type="button" onclick="add()" value="הוסף אייקונים" />
-<input type="button" onclick="move()" value="הסר אייקונים" />
+
 </body>
 </body>
 </div>
