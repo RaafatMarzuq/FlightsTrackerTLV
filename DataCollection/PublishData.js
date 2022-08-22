@@ -62,10 +62,16 @@ async function publishAndStor(){
                 
                 // console.log(`arrWEATHE = ${arrivalWeather}\nDEPweather = ${departureWeahter}`)
                 typeOfFlight = 'short';
-
+                const weekday = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+                const d = new Date();
+                let day = weekday[d.getDay()];
+                const m = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+                let month = m[d.getMonth()];
                 const allData = {
                     flightNumber :flightInfo.data.response.flight_number,
                     period: period,
+                    month:month,
+                    day:day,
                     airline : airline,
                     departureAirport : departureAirport,
                     arrivalAirport : arrivalAirport,

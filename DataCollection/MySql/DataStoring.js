@@ -26,12 +26,8 @@ function insertToDatabase(data){
     const departureWeahter = data.departureWeahter;
     const arrivalWeather = data.arrivalWeather ;
     const arrivalStatus = data.arrivalStatus;
-
-    const weekday = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
-    const d = new Date();
-    let day = weekday[d.getDay()];
-    const m = ["January","February","March","April","May","June","July","August","September","October","November","December"];
-    let month = m[d.getMonth()];
+    const month = data.month;
+    const day = data.day;
 
     var sql = `INSERT INTO flights (period,month,day, airline,departureAirport,arrivalAirport,typeOfFlight,departureWeahter,arrivalWeather,arrivalStatus )
          VALUES ('${period}','${month}','${day}',' ${airline}', '${departureAirport}', '${arrivalAirport}','${typeOfFlight}','${departureWeahter}','${arrivalWeather}','${arrivalStatus}') `;

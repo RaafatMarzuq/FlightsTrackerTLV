@@ -53,7 +53,7 @@ function getPeriod(){
     var month = ("0" + (date_ob.getMonth() + 1)).slice(-2);
     var year = date_ob.getFullYear();
     
-    var date =  year + "-" + month + "-" + day;
+    var date = year + "-" + month + "-" + day;
    
     const Hholyday = ["Rosh Hashana","Sukkot","Yom Kippur","Shmini Atzeret","Lag BaOmer","Simchat Torah","Chanukah","Pesach","Shavuot","Purim",]
     return new Promise ( res => { 
@@ -61,19 +61,26 @@ function getPeriod(){
          .then(response => {
 
             var arr2 = response.data.events
-            // console.log(arr2)
-            const containsAll =arr2.every(element => {
-                return Hholyday.includes(element);
-              });
-                     if(containsAll){
+            
+            for (let i = 0; i < arr2.length; i++) {
+                const element = arr2[i];
+                Hholyday.forEach(element2 => {
+                    if(element.includes(element2)){
                         res('holiday')
+                        return ;
                     }else {
                         if(date_ob.getMonth() >= 6  && date_ob.getMonth() <= 8) {
                             res('summer')
+                            return;
                         }else{
                                 res('normal day')
+                                return;
                         }
                     }
+                });
+                
+            }
+                     
             });
                
             });
@@ -94,7 +101,7 @@ function getCity(city){
 }
 
 
-// getPeriod().then()
+getPeriod().then(res => {console.log(res)})
 module.exports.getCity = getCity;
 module.exports.getFlights = getFlights;
 module.exports.getWeather = getWeather;

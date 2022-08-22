@@ -30,7 +30,7 @@ function exportToCsv(){
     var query = { };
     dbo.collection("flights").find(query).toArray(function(err, result) {
       if (err) throw err;
-      var fields = ['period','month' ,'day', 'airline', 'departureAirport', 'arrivalAirport', 'typeOfFlight', 'departureWeahter'  , 'arrivalWeather' , 'arrivalStatus'];
+      var fields = ['flightNumber','period','month' ,'day', 'airline', 'departureAirport', 'arrivalAirport', 'typeOfFlight', 'departureWeahter'  , 'arrivalWeather' , 'arrivalStatus'];
       const opts = { fields };
       try {
         const parser = new Parser(opts);
@@ -47,6 +47,6 @@ function exportToCsv(){
     });
   });
 }
-exportToCsv();
+// exportToCsv();
 module.exports.insertToMongoDB = insertToMongoDB;
 module.exports.exportToCsv = exportToCsv;

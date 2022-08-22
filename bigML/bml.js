@@ -29,16 +29,22 @@ function createModel(){
   });
 }
 async function predictTopic(flightNumber,period,month,day,airline,departureAirport,arrivalAirport,typeOfFlight,departureWeahter,arrivalWeather){
-    
+ 
+  // console.log("the data = " ,flightNumber,period,month,day,airline,departureAirport,arrivalAirport,typeOfFlight,departureWeahter,arrivalWeather+"\n")
+
   return await new Promise( res =>{
     var connection = new bigml.BigML('RaafatMarzuq','2a5da361441e10eaee2258ad814e5f2d764181b0')
     var source = new bigml.Source(connection);
     source.create('../bigML/MongoData.csv',true, async function(error, sourceInfo) {
-      if(error) throw error;
+      if(error) {
+        console.log("ERROR1")
+        throw error;}
       if (!error && sourceInfo) {
         var dataset = new bigml.Dataset(connection);
         dataset.create(sourceInfo, async function(error, datasetInfo) {
-          if(error) throw error;
+          if(error) {
+            console.log("ERROR2")
+            throw error;}
           if (!error && datasetInfo) {
           var predictionInput= {
             flightNumber :flightNumber,
@@ -53,11 +59,13 @@ async function predictTopic(flightNumber,period,month,day,airline,departureAirpo
             arrivalWeather : arrivalWeather
         }
         var prediction =  new bigml.Prediction(connection);
-        
-        prediction.create('model/6300ab341ca2060c68000cc1',predictionInput, async function(error, prediction) {
-          if(error) throw error;
-          
-          
+        if(predictionInput){
+          // console.log("predictionInput" + JSON.stringify(predictionInput) + "\n")
+        prediction.create('model/63037b01d432eb2ff0000e13',predictionInput, async function(error, prediction) {
+          if(error) {
+            console.log("ERROR3")
+            throw error;}
+
          const output = await prediction.object.probabilities;
          var predictedTopic ,num1 = output[0][1],num2= output[1][1],num3= output[2][1];
          if(num1 > num2 && num1 > num3) {
@@ -72,9 +80,11 @@ async function predictTopic(flightNumber,period,month,day,airline,departureAirpo
         
 
           res(predictedTopic)    
-        });
+        }
+      );}
       }
     });
+  
     }
   });
 }) 
@@ -83,13 +93,17 @@ async function predictTopic(flightNumber,period,month,day,airline,departureAirpo
 async function GetPred(flightNumber,period,month,day,airline,departureAirport,arrivalAirport,typeOfFlight,departureWeahter,arrivalWeather){
   
   var ans = await predictTopic(flightNumber,period,month,day,airline,departureAirport,arrivalAirport,typeOfFlight,departureWeahter,arrivalWeather);
- 
+  console.log("predection = " + ans)
   return ans;
 }
-
+function sleep(ms) {
+  return new Promise((resolve) => {
+    setTimeout(resolve, ms);
+  });
+}
 
 // GetPred("740","summer","april",8,"AIZ","CDG","TLV","long","29.98","29.98").then(res=> console.log(res));
-createModel()
+// createModel()
 // module.exports.predictTopic= predictTopic;
 module.exports.GetPred = GetPred;
 module.exports.createModel=createModel;

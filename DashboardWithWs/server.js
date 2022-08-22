@@ -26,7 +26,6 @@ function updateNewData(){
     var dep_flights_data =   getFlightsDataByNumber(data,flights_counter.depFlightsNumber);
        
    stringfyData(arr_flights_data).then(res1 => {
-
     stringfyData(dep_flights_data ).then(res2 =>{
       io.emit('flights data',res1  , res2);
     })
@@ -125,6 +124,8 @@ function getFlightsNumber(data){
 }
 
 async function stringfyData(flighits_data){
+  
+if(flighits_data){
   let str;
   const weekday = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
   const d = new Date();
@@ -132,32 +133,29 @@ async function stringfyData(flighits_data){
   const m = ["January","February","March","April","May","June","July","August","September","October","November","December"];
   let month = m[d.getMonth()];
   for (let k= 0; k< flighits_data.length; k++) {
-    if(flighits_data[k]['flightNumber'] 
+    if(     flighits_data[k]['flightNumber'] 
             && flighits_data[k]['airline'] 
-            && flighits_data[k]['departureAirport']
+            && flighits_data[k]['period']
             && flighits_data[k]['departureAirport'] 
             && flighits_data[k]['arrivalAirport']
             && flighits_data[k]['departureWeahter']
             && flighits_data[k]['arrivalWeather']
             && flighits_data[k]['typeOfFlight'] ){
              
-             await getArrivalStatus(flighits_data[k]['flightNumber'],month,day, flighits_data[k]['airline'], flighits_data[k]['departureAirport']
-             , flighits_data[k]['departureAirport'] 
-            ,flighits_data[k]['arrivalAirport'],flighits_data[k]['typeOfFlight']
-            ,flighits_data[k]['departureWeahter']
-             ,flighits_data[k]['arrivalWeather']
-             ).then(res=>{
-        str += `Flight Number is ${flighits_data[k]['flightNumber']}
-          Airline : ${flighits_data[k]['airline']}
-          Departure Airport : ${flighits_data[k]['departureAirport']}
-          Arrival Airport : ${flighits_data[k]['arrivalAirport']}
-          Departure Weahter : ${flighits_data[k]['departureWeahter']}
-          Arrival Weather : ${flighits_data[k]['arrivalWeather']}
-          The flight will be ${res}
-          
-          `;
+          await getArrivalStatus(flighits_data[k]['flightNumber'],flighits_data[k]['period'],month,day ,flighits_data[k]['airline'], flighits_data[k]['departureAirport'] ,flighits_data[k]['arrivalAirport'],flighits_data[k]['typeOfFlight'],flighits_data[k]['departureWeahter'],flighits_data[k]['arrivalWeather']).then(res=>{
+            
+            str += `Flight Number is ${flighits_data[k]['flightNumber']}
+            Airline : ${flighits_data[k]['airline']}
+            Departure Airport : ${flighits_data[k]['departureAirport']}
+            Arrival Airport : ${flighits_data[k]['arrivalAirport']}
+            Departure Weahter : ${flighits_data[k]['departureWeahter']}
+            Arrival Weather : ${flighits_data[k]['arrivalWeather']}
+            The flight will be ${res}
+            
+            `;
              })
-
+            }
+              sleep(2000)
   } 
   }
    
@@ -167,12 +165,18 @@ async function stringfyData(flighits_data){
   
  
 async function getArrivalStatus(flightNumber,period,month,day,airline,departureAirport,arrivalAirport,typeOfFlight,departureWeahter,arrivalWeather){
-  Mongo.exportToCsv();   
+  
+  if(flightNumber,period,month,day,airline,departureAirport,arrivalAirport,typeOfFlight,departureWeahter,arrivalWeather){
   const ans = await BigML.GetPred(flightNumber,period,month,day,airline,departureAirport,arrivalAirport,typeOfFlight,departureWeahter,arrivalWeather)
- 
-  return ans;
+  console.log("\npredecion = " + ans + "\n")
+  return ans;}
+  else  return ;
 }
-
+function sleep(ms) {
+  return new Promise((resolve) => {
+    setTimeout(resolve, ms);
+  });
+}
 function getTLVWeather(data,arrFlightsNumber){
  
     for (let j = 0; j < data.length; j++) {
