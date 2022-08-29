@@ -2921,3 +2921,66 @@ at processTicksAndRejections (node:internal/process/task_queues:96:5)"
 {"level":"error","message":"Remote request failed: Error: Request failed with status code 402"}
 {"level":"error","message":"Error processing request: Error: Request failed with status code 402\ndata: [object Object]. Retrying."}
 {"date":"Wed Aug 24 2022 14:51:50 GMT+0300 (שעון ישראל (קיץ))","error":{},"exception":true,"level":"error","message":"uncaughtException: Retries limit exceeded\nError: Retries limit exceeded\n    at Dataset.Resource.retryRequest (C:\\Users\\Raafat Marzuq\\Desktop\\BigDataCloudComputing2\\BigDataCloudComputing\\bigML\\node_modules\\bigml\\lib\\Resource.js:472:28)\n    at Object.requestResponse (C:\\Users\\Raafat Marzuq\\Desktop\\BigDataCloudComputing2\\BigDataCloudComputing\\bigML\\node_modules\\bigml\\lib\\utils.js:301:21)\n    at processResponse (C:\\Users\\Raafat Marzuq\\Desktop\\BigDataCloudComputing2\\BigDataCloudComputing\\bigML\\node_modules\\bigml\\lib\\utils.js:621:30)\n    at C:\\Users\\Raafat Marzuq\\Desktop\\BigDataCloudComputing2\\BigDataCloudComputing\\bigML\\node_modules\\bigml\\lib\\BigML.js:234:18\n    at processTicksAndRejections (node:internal/process/task_queues:96:5)","os":{"loadavg":[0,0,0],"uptime":1175961},"process":{"argv":["C:\\Program Files\\nodejs\\node.exe","C:\\Users\\Raafat Marzuq\\Desktop\\BigDataCloudComputing2\\BigDataCloudComputing\\DashboardWithWs\\server.js"],"cwd":"C:\\Users\\Raafat Marzuq\\Desktop\\BigDataCloudComputing2\\BigDataCloudComputing\\DashboardWithWs","execPath":"C:\\Program Files\\nodejs\\node.exe","gid":null,"memoryUsage":{"arrayBuffers":20450274,"external":21974451,"heapTotal":84361216,"heapUsed":53500272,"rss":123166720},"pid":19636,"uid":null,"version":"v16.14.1"},"stack":"Error: Retries limit exceeded\n    at Dataset.Resource.retryRequest (C:\\Users\\Raafat Marzuq\\Desktop\\BigDataCloudComputing2\\BigDataCloudComputing\\bigML\\node_modules\\bigml\\lib\\Resource.js:472:28)\n    at Object.requestResponse (C:\\Users\\Raafat Marzuq\\Desktop\\BigDataCloudComputing2\\BigDataCloudComputing\\bigML\\node_modules\\bigml\\lib\\utils.js:301:21)\n    at processResponse (C:\\Users\\Raafat Marzuq\\Desktop\\BigDataCloudComputing2\\BigDataCloudComputing\\bigML\\node_modules\\bigml\\lib\\utils.js:621:30)\n    at C:\\Users\\Raafat Marzuq\\Desktop\\BigDataCloudComputing2\\BigDataCloudComputing\\bigML\\node_modules\\bigml\\lib\\BigML.js:234:18\n    at processTicksAndRejections (node:internal/process/task_queues:96:5)","trace":[{"column":28,"file":"C:\\Users\\Raafat Marzuq\\Desktop\\BigDataCloudComputing2\\BigDataCloudComputing\\bigML\\node_modules\\bigml\\lib\\Resource.js","function":"Dataset.Resource.retryRequest","line":472,"method":"retryRequest","native":false},{"column":21,"file":"C:\\Users\\Raafat Marzuq\\Desktop\\BigDataCloudComputing2\\BigDataCloudComputing\\bigML\\node_modules\\bigml\\lib\\utils.js","function":"Object.requestResponse","line":301,"method":"requestResponse","native":false},{"column":30,"file":"C:\\Users\\Raafat Marzuq\\Desktop\\BigDataCloudComputing2\\BigDataCloudComputing\\bigML\\node_modules\\bigml\\lib\\utils.js","function":"processResponse","line":621,"method":null,"native":false},{"column":18,"file":"C:\\Users\\Raafat Marzuq\\Desktop\\BigDataCloudComputing2\\BigDataCloudComputing\\bigML\\node_modules\\bigml\\lib\\BigML.js","function":null,"line":234,"method":null,"native":false},{"column":5,"file":"node:internal/process/task_queues","function":"processTicksAndRejections","line":96,"method":null,"native":false}]}
+{"level":"error","message":"Remote request failed: Error: Request failed with status code 402"}
+{"level":"error","message":"Error processing request: Error: Request failed with status code 402\ndata: [object Object]. Retrying."}
+{"level":"error","message":"Retrying undefined get with arguments: undefined. "}
+{"level":"error","message":"Remote request failed: Error: Request failed with status code 402"}
+{"level":"error","message":"Error processing request: Error: Request failed with status code 402\ndata: [object Object]. Retrying."}
+{"level":"error","message":"Retrying undefined get with arguments: undefined. "}
+{"level":"error","message":"Remote request failed: Error: Request failed with status code 402"}
+{"level":"error","message":"Error processing request: Error: Request failed with status code 402\ndata: [object Object]. Retrying."}
+{"level":"error","message":"Retrying undefined get with arguments: undefined. "}
+{"level":"error","message":"Remote request failed: Error: Request failed with status code 402"}
+{"level":"error","message":"Error processing request: Error: Request failed with status code 402\ndata: [object Object]. Retrying."}
+{"date":"Mon Aug 29 2022 19:13:33 GMT+0300 (שעון ישראל (קיץ))","error":{},"exception":true,"level":"error","message":"uncaughtException: Retries limit exceeded\nError: Retries limit exceeded\n    at Dataset.Resource.retryRequest (C:\\Users\\Raafat Marzuq\\Desktop\\BigDataCloudComputing2\\BigDataCloudComputing\\bigML\\node_modules\\bigml\\lib\\Resource.js:472:28)\n    at Object.requestResponse (C:\\Users\\Raafat Marzuq\\Desktop\\BigDataCloudComputing2\\BigDataCloudComputing\\bigML\\node_modules\\bigml\\lib\\utils.js:301:21)\n    at processResponse (C:\\Users\\Raafat Marzuq\\Desktop\\BigDataCloudComputing2\\BigDataCloudComputing\\bigML\\node_modules\\bigml\\lib\\utils.js:621:30)\n    at C:\\Users\\Raafat Marzuq\\Desktop\\BigDataCloudComputing2\\BigDataCloudComputing\\bigML\\node_modules\\bigml\\lib\\BigML.js:234:18\n    at processTicksAndRejections (node:internal/process/task_queues:96:5)","os":{"loadavg":[0,0,0],"uptime":1623665},"process":{"argv":["C:\\Program Files\\nodejs\\node.exe","C:\\Users\\Raafat Marzuq\\Desktop\\BigDataCloudComputing2\\BigDataCloudComputing\\DashboardWithWs\\server.js"],"cwd":"C:\\Users\\Raafat Marzuq\\Desktop\\BigDataCloudComputing2\\BigDataCloudComputing\\DashboardWithWs","execPath":"C:\\Program Files\\nodejs\\node.exe","gid":null,"memoryUsage":{"arrayBuffers":18568153,"external":21158300,"heapTotal":53428224,"heapUsed":47195032,"rss":91320320},"pid":11328,"uid":null,"version":"v16.14.1"},"stack":"Error: Retries limit exceeded\n    at Dataset.Resource.retryRequest (C:\\Users\\Raafat Marzuq\\Desktop\\BigDataCloudComputing2\\BigDataCloudComputing\\bigML\\node_modules\\bigml\\lib\\Resource.js:472:28)\n    at Object.requestResponse (C:\\Users\\Raafat Marzuq\\Desktop\\BigDataCloudComputing2\\BigDataCloudComputing\\bigML\\node_modules\\bigml\\lib\\utils.js:301:21)\n    at processResponse (C:\\Users\\Raafat Marzuq\\Desktop\\BigDataCloudComputing2\\BigDataCloudComputing\\bigML\\node_modules\\bigml\\lib\\utils.js:621:30)\n    at C:\\Users\\Raafat Marzuq\\Desktop\\BigDataCloudComputing2\\BigDataCloudComputing\\bigML\\node_modules\\bigml\\lib\\BigML.js:234:18\n    at processTicksAndRejections (node:internal/process/task_queues:96:5)","trace":[{"column":28,"file":"C:\\Users\\Raafat Marzuq\\Desktop\\BigDataCloudComputing2\\BigDataCloudComputing\\bigML\\node_modules\\bigml\\lib\\Resource.js","function":"Dataset.Resource.retryRequest","line":472,"method":"retryRequest","native":false},{"column":21,"file":"C:\\Users\\Raafat Marzuq\\Desktop\\BigDataCloudComputing2\\BigDataCloudComputing\\bigML\\node_modules\\bigml\\lib\\utils.js","function":"Object.requestResponse","line":301,"method":"requestResponse","native":false},{"column":30,"file":"C:\\Users\\Raafat Marzuq\\Desktop\\BigDataCloudComputing2\\BigDataCloudComputing\\bigML\\node_modules\\bigml\\lib\\utils.js","function":"processResponse","line":621,"method":null,"native":false},{"column":18,"file":"C:\\Users\\Raafat Marzuq\\Desktop\\BigDataCloudComputing2\\BigDataCloudComputing\\bigML\\node_modules\\bigml\\lib\\BigML.js","function":null,"line":234,"method":null,"native":false},{"column":5,"file":"node:internal/process/task_queues","function":"processTicksAndRejections","line":96,"method":null,"native":false}]}
+{"level":"error","message":"Remote request failed: Error: Request failed with status code 402"}
+{"level":"error","message":"Error processing request: Error: Request failed with status code 402\ndata: [object Object]. Retrying."}
+{"level":"error","message":"Retrying undefined get with arguments: undefined. "}
+{"level":"error","message":"Remote request failed: Error: Request failed with status code 402"}
+{"level":"error","message":"Error processing request: Error: Request failed with status code 402\ndata: [object Object]. Retrying."}
+{"level":"error","message":"Retrying undefined get with arguments: undefined. "}
+{"level":"error","message":"Remote request failed: Error: Request failed with status code 402"}
+{"level":"error","message":"Error processing request: Error: Request failed with status code 402\ndata: [object Object]. Retrying."}
+{"level":"error","message":"Retrying undefined get with arguments: undefined. "}
+{"level":"error","message":"Remote request failed: Error: Request failed with status code 402"}
+{"level":"error","message":"Error processing request: Error: Request failed with status code 402\ndata: [object Object]. Retrying."}
+{"level":"error","message":"Retrying undefined get with arguments: undefined. "}
+{"level":"error","message":"Remote request failed: Error: Request failed with status code 402"}
+{"level":"error","message":"Error processing request: Error: Request failed with status code 402\ndata: [object Object]. Retrying."}
+{"level":"error","message":"Retrying undefined get with arguments: undefined. "}
+{"level":"error","message":"Remote request failed: Error: Request failed with status code 402"}
+{"level":"error","message":"Error processing request: Error: Request failed with status code 402\ndata: [object Object]. Retrying."}
+{"level":"error","message":"Retrying undefined get with arguments: undefined. "}
+{"level":"error","message":"Remote request failed: Error: Request failed with status code 402"}
+{"level":"error","message":"Error processing request: Error: Request failed with status code 402\ndata: [object Object]. Retrying."}
+{"level":"error","message":"Retrying undefined get with arguments: undefined. "}
+{"level":"error","message":"Remote request failed: Error: Request failed with status code 402"}
+{"level":"error","message":"Error processing request: Error: Request failed with status code 402\ndata: [object Object]. Retrying."}
+{"level":"error","message":"Retrying undefined get with arguments: undefined. "}
+{"level":"error","message":"Remote request failed: Error: Request failed with status code 402"}
+{"level":"error","message":"Error processing request: Error: Request failed with status code 402\ndata: [object Object]. Retrying."}
+{"level":"error","message":"Retrying undefined get with arguments: undefined. "}
+{"level":"error","message":"Remote request failed: Error: Request failed with status code 402"}
+{"level":"error","message":"Error processing request: Error: Request failed with status code 402\ndata: [object Object]. Retrying."}
+{"level":"error","message":"Retrying undefined get with arguments: undefined. "}
+{"level":"error","message":"Remote request failed: Error: Request failed with status code 402"}
+{"level":"error","message":"Error processing request: Error: Request failed with status code 402\ndata: [object Object]. Retrying."}
+{"level":"error","message":"Retrying undefined get with arguments: undefined. "}
+{"level":"error","message":"Remote request failed: Error: Request failed with status code 402"}
+{"level":"error","message":"Error processing request: Error: Request failed with status code 402\ndata: [object Object]. Retrying."}
+{"level":"error","message":"Retrying undefined get with arguments: undefined. "}
+{"level":"error","message":"Remote request failed: Error: Request failed with status code 402"}
+{"level":"error","message":"Error processing request: Error: Request failed with status code 402\ndata: [object Object]. Retrying."}
+{"level":"error","message":"Retrying undefined get with arguments: undefined. "}
+{"level":"error","message":"Remote request failed: Error: Request failed with status code 402"}
+{"level":"error","message":"Error processing request: Error: Request failed with status code 402\ndata: [object Object]. Retrying."}
+{"level":"error","message":"Retrying undefined get with arguments: undefined. "}
+{"level":"error","message":"Remote request failed: Error: Request failed with status code 402"}
+{"level":"error","message":"Error processing request: Error: Request failed with status code 402\ndata: [object Object]. Retrying."}
+{"level":"error","message":"Retrying undefined get with arguments: undefined. "}
+{"level":"error","message":"Remote request failed: Error: Request failed with status code 402"}
+{"level":"error","message":"Error processing request: Error: Request failed with status code 402\ndata: [object Object]. Retrying."}
+{"level":"error","message":"Retrying undefined get with arguments: undefined. "}
+{"level":"error","message":"Remote request failed: Error: Request failed with status code 402"}
+{"level":"error","message":"Error processing request: Error: Request failed with status code 402\ndata: [object Object]. Retrying."}
+{"level":"error","message":"Retrying undefined get with arguments: undefined. "}

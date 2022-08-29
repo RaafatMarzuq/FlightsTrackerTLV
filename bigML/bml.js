@@ -92,10 +92,12 @@ async function predictTopic(element){
 
 async function GetPred(element){
   // console.log("\nflights data = ",flightNumber,period,month,day,airline,departureAirport,arrivalAirport,typeOfFlight,departureWeahter,arrivalWeather)
- 
+ if(element){
   var ans =  predictTopic(element);
  
   return ans;
+ }
+ return;
 }
 
 
