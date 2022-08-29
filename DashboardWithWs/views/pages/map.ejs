@@ -29,13 +29,29 @@
                 document.getElementById("arrFlightsNumber").innerText = msg['arrFlightsSum'] ;
                 document.getElementById("depFlightsNumber").innerText = msg['depFlightsSum'];
             })
-            socket.on('flights data', function (msg1,msg2) {
-            //   alert(msg1)
-                document.getElementById("arrFlightsData").innerText = msg1;
-                
-                document.getElementById("depFlightsData").innerText = msg2  ;
-            })
+            
+            
 
+
+
+           
+            socket.on('flights data1', function (msg) {
+            //   alert(msg)
+            if(msg ){
+                document.getElementById("arrFlightsData").innerText = msg;  
+            }else{                
+                document.getElementById("arrFlightsData").innerText = "waiting for the prediction"  ;
+            }
+            })
+            socket.on('flights data2', function (msg) {
+            //   alert(msg)
+            if(msg ){
+                document.getElementById("depFlightsData").innerText = msg;  
+            }else{                
+                document.getElementById("depFlightsData").innerText = "waiting for the prediction"  ;
+            }
+            })
+            
             add();
                 
         }

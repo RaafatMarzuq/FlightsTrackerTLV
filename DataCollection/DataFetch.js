@@ -89,9 +89,9 @@ function getPeriod(){
         
 }
 function getCity(city){
-    
+    if(city){
     return new Promise ( res => { 
-    axios.get(`https://airlabs.co/api/v9/cities?city_code=${city}&_fields=name&api_key=${process.env.FLIGHTS_ACCESS_KEY}`).then(response => {
+    axios.get(`https://airlabs.co/api/v9/cities?city_code=${city}&_fields=name,lat,lng&api_key=${process.env.FLIGHTS_ACCESS_KEY}`).then(response => {
         // console.log(response)
         res(response.data.response)            
     }).catch(error => {
@@ -99,9 +99,25 @@ function getCity(city){
 });
     })
 }
+}
 
+// console.log( getTime("2021-07-22 22:53"))
+function getTime(timeStamp){
+    var time = timeStamp.trim().split(/\s+/)[1].split(":");
+    var hours = parseInt(time[0])*60
+    var min = parseInt(time[1])
+    
+    var today = new Date();
+    var TimeInMin = ((parseInt(today.getHours()))*60 + parseInt(today.getMinutes()));
+    
+    if(Math.abs((hours+min)- TimeInMin) <= 15){
+        return true
+    }else return false ;
 
-getPeriod().then(res => {console.log(res)})
+}
+
+// getPeriod().then(res => {console.log(res)})
+module.exports.getTime = getTime;
 module.exports.getCity = getCity;
 module.exports.getFlights = getFlights;
 module.exports.getWeather = getWeather;

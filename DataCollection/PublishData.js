@@ -28,7 +28,7 @@ async function publishAndStor(){
             const flightInfo =await data.flightINFO(element[2])
            
             if(flightInfo.data.response){
-
+                if(data.getTime(flightInfo.data.response.dep_time) || data.getTime(flightInfo.data.response.arr_time)){
                 airline =flightInfo.data.response.airline_icao;
                 departureAirport = flightInfo.data.response.dep_iata;
                 arrivalAirport = flightInfo.data.response.arr_iata ;
@@ -40,8 +40,13 @@ async function publishAndStor(){
                 }else{
                     arrivalStatus = 'severely Delayed'
                 }
+
+                var dep_lat_lng=[];
                 data.getCity(departureAirport).then( res =>{
+                    // console.log(res)
                     if(res[0]){
+                        dep_lat_lng.push(res[0].lat)
+                        dep_lat_lng.push(res[0].lng)
                         data.getWeather(res[0].name).then(ans=>{
                         departureWeahter = ans  ;
                                       }) ;
@@ -49,19 +54,28 @@ async function publishAndStor(){
                     
                 }
                 )
-
+                var arr_lat_lng=[];
                 data.getCity(arrivalAirport).then(res =>{
-                    // console.log(res[0])
+                    // console.log(res)
                     if(res[0]){
+                        arr_lat_lng.push(res[0].lat)
+                        arr_lat_lng.push(res[0].lng)
                         data.getWeather(res[0].name).then(ans =>{
                          arrivalWeather =ans
                     })
                     }
                     
                 })
+                var dest = calcCrow(dep_lat_lng[0],dep_lat_lng[1],arr_lat_lng[0],arr_lat_lng[1])
+                console.log(dest)
+                if(dest <= 1500){
+                    typeOfFlight = 'Short Flight';
+                }else if (dest <= 3500) {
+                    typeOfFlight = 'Average Flight';
+                }else{
+                    typeOfFlight = 'Long Flight';
+                }
                 
-                // console.log(`arrWEATHE = ${arrivalWeather}\nDEPweather = ${departureWeahter}`)
-                typeOfFlight = 'short';
                 const weekday = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
                 const d = new Date();
                 let day = weekday[d.getDay()];
@@ -89,13 +103,33 @@ async function publishAndStor(){
                 // console.log("befor publishing to kafka")
                 kafka.publish(allData);
             }
-
+        }
         }
     }
     
-       setTimeout(publishAndStor,10000) 
+       setTimeout(publishAndStor,40000) 
 }
 
+function calcCrow(lat1, lon1, lat2, lon2) 
+    {
+      var R = 6371; // km
+      var dLat = toRad(lat2-lat1);
+      var dLon = toRad(lon2-lon1);
+      var lat1 = toRad(lat1);
+      var lat2 = toRad(lat2);
+
+      var a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+        Math.sin(dLon/2) * Math.sin(dLon/2) * Math.cos(lat1) * Math.cos(lat2); 
+      var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+      var d = R * c;
+      return d;
+    }
+
+    // Converts numeric degrees to radians
+    function toRad(Value) 
+    {
+        return Value * Math.PI / 180;
+    }
 
 publishAndStor()
 

@@ -14,29 +14,14 @@ redisPub;
 function updateNewData(){
   // taking the data from redis
   var dataFromRedis= redisSub.getData();
-  dataFromRedis.then(res => {
+  dataFromRedis.then(async (res) => {
+    
     var data = JSON.parse(res);
-    // console.log(`data = ${data}`)
+    
     var flights_counter = getFlightsNumber(data);
+    //  console.log(`new data = ${JSON.stringify(new_data)}`)
+      
     
-
-    
-
-    var arr_flights_data = getFlightsDataByNumber(data,flights_counter.arrFlightsNumber);
-    var dep_flights_data =   getFlightsDataByNumber(data,flights_counter.depFlightsNumber);
-       
-   stringfyData(arr_flights_data).then(res1 => {
-    stringfyData(dep_flights_data ).then(res2 =>{
-      io.emit('flights data',res1  , res2);
-    })
-    
-        
-   })
-   
-  
-     
-
-     
  
     var airplains_location= getLngLat(data);
     
@@ -51,11 +36,16 @@ function updateNewData(){
     io.emit('flights counter', flights_counter);
    
     io.emit('flights location', airplains_location);
-
+    var new_data = await getPrediction(data)
+    var arr_flights_string = getFlightsDataByNumber(new_data,flights_counter.arrFlightsNumber)
+    var dep_flights_string = getFlightsDataByNumber(new_data,flights_counter.depFlightsNumber)
+     
+    io.emit('flights data1', arr_flights_string) 
+    io.emit('flights data2', dep_flights_string) 
   });
  
 
-  setTimeout(updateNewData,10000);
+  setTimeout(updateNewData,45000);
 }
 
 app.get('/', (req, res) => {
@@ -98,100 +88,74 @@ function getFlightsNumber(data){
     return output;
 }
 
- function getFlightsDataByNumber(data,flights){
-  
-  var flighits_data =[] ;
-  for (let i = 0; i < flights.length; i++) {
-    for (let j = 0; j < data.length; j++) {
-    if (data[j].flightNumber == flights[i]) {
-      const obj= {
-        flightNumber :data[j].flightNumber,
-        period: data[j].period,
-        airline : data[j].airline,
-        departureAirport : data[j].departureAirport,
-        arrivalAirport : data[j].arrivalAirport,
-        typeOfFlight : data[j].typeOfFlight,
-        departureWeahter : data[j].departureWeahter,
-        arrivalWeather : data[j].arrivalWeather,
-       
-      }
-      flighits_data.push(obj);
-    }
-      
-    }
-  }
-     return flighits_data;
-}
-
-async function stringfyData(flighits_data){
-  
-if(flighits_data){
-  let str;
-  const weekday = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
-  const d = new Date();
-  let day = weekday[d.getDay()];
-  const m = ["January","February","March","April","May","June","July","August","September","October","November","December"];
-  let month = m[d.getMonth()];
-  for (let k= 0; k< flighits_data.length; k++) {
-    if(     flighits_data[k]['flightNumber'] 
-            && flighits_data[k]['airline'] 
-            && flighits_data[k]['period']
-            && flighits_data[k]['departureAirport'] 
-            && flighits_data[k]['arrivalAirport']
-            && flighits_data[k]['departureWeahter']
-            && flighits_data[k]['arrivalWeather']
-            && flighits_data[k]['typeOfFlight'] ){
-             
-          await getArrivalStatus(flighits_data[k]['flightNumber'],flighits_data[k]['period'],month,day ,flighits_data[k]['airline'], flighits_data[k]['departureAirport'] ,flighits_data[k]['arrivalAirport'],flighits_data[k]['typeOfFlight'],flighits_data[k]['departureWeahter'],flighits_data[k]['arrivalWeather']).then(res=>{
-            
-            str += `Flight Number is ${flighits_data[k]['flightNumber']}
-            Airline : ${flighits_data[k]['airline']}
-            Departure Airport : ${flighits_data[k]['departureAirport']}
-            Arrival Airport : ${flighits_data[k]['arrivalAirport']}
-            Departure Weahter : ${flighits_data[k]['departureWeahter']}
-            Arrival Weather : ${flighits_data[k]['arrivalWeather']}
-            The flight will be ${res}
-            
-            `;
-             })
-            }
-              sleep(2000)
-  } 
-  }
-   
-  // console.log(str)
-  return str;
-}
-  
  
-async function getArrivalStatus(flightNumber,period,month,day,airline,departureAirport,arrivalAirport,typeOfFlight,departureWeahter,arrivalWeather){
-  
-  if(flightNumber,period,month,day,airline,departureAirport,arrivalAirport,typeOfFlight,departureWeahter,arrivalWeather){
-  const ans = await BigML.GetPred(flightNumber,period,month,day,airline,departureAirport,arrivalAirport,typeOfFlight,departureWeahter,arrivalWeather)
-  console.log("\npredecion = " + ans + "\n")
-  return ans;}
-  else  return ;
-}
-function sleep(ms) {
-  return new Promise((resolve) => {
-    setTimeout(resolve, ms);
-  });
-}
+
+
+
+
 function getTLVWeather(data,arrFlightsNumber){
  
     for (let j = 0; j < data.length; j++) {
-    if (data[j].flightNumber == arrFlightsNumber[0]) {
-      return data[j].arrivalWeather;      
-    }
+      if (data[j].flightNumber == arrFlightsNumber[0]) {
+        return data[j].arrivalWeather;      
+      }
       
     }
 }
+
 
 const server = express()
   .use(app)
   .listen(3000, () => console.log(`Listening Socket on http://localhost:3000`));
 const io = socketIO(server);
 
+function getFlightsDataByNumber(data,flights){
+  
+  var str ="" ;
+  for (let i = 0; i < flights.length; i++) {
+    for (let j = 0; j < data.length; j++) {
+    if (data[j].flightNumber == flights[i]) {
+      const element = data[j];
+      str += `Flight Number is ${element.flightNumber}
+          Airline : ${element.airline}
+          Departure Airport : ${element.departureAirport}
+          Arrival Airport : ${element.arrivalAirport}
+          Departure Weahter : ${element.departureWeahter}
+          Arrival Weather : ${element.arrivalWeather}
+          The flight will be ${element.arrivalStatus}
+          
+          `;
+    }
+      
+    }
+  }
+     return str;
+}
 
 
+async function getPrediction(data){
+  let new_data =[];
+  if(data){
+    for (let i = 0; i < data.length ; i++ ) {
+      const element = data[i];
+      await BigML.GetPred(element).then(arrivalStatus =>{
+        const obj ={
+          flightNumber : element.flightNumber,
+          period : element.period,
+          month : element.month ,
+          day : element.day,
+          airline : element.airline,
+          departureAirport : element.departureAirport,
+          arrivalAirport : element.arrivalAirport,
+          typeOfFlight : element.typeOfFlight,
+          departureWeahter : element.departureWeahter  ,
+          arrivalWeather : element.arrivalWeather,
+          arrivalStatus : arrivalStatus
+        }
+        new_data.push(obj)
+      })
 
+    }
+    return new_data;
+  }
+}
