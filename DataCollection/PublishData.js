@@ -81,6 +81,7 @@ async function publishAndStor(){
                 let day = weekday[d.getDay()];
                 const m = ["January","February","March","April","May","June","July","August","September","October","November","December"];
                 let month = m[d.getMonth()];
+              
                 const allData = {
                     flightNumber :flightInfo.data.response.flight_number,
                     period: period,
@@ -94,14 +95,20 @@ async function publishAndStor(){
                     arrivalWeather : arrivalWeather,
                     arrivalStatus : arrivalStatus ,
                     lat : flightInfo.data.response.lat,
-                    lng : flightInfo.data.response.lng ,
-                    alt : flightInfo.data.response.alt
+                    lng : flightInfo.data.response.lng 
+                    
 
                 }
-                sql.insertToDatabase(allData);
-                // console.log(allData)
-                // console.log("befor publishing to kafka")
-                kafka.publish(allData);
+                if (allData.flightNumber && allData.airline && allData.arrivalAirport && allData.arrivalWeather
+                    && allData.departureAirport && allData.departureWeahter && allData.lat && allData.lng 
+                    && allData.arrivalStatus && allData.typeOfFlight && allData.period) {
+                    sql.insertToDatabase(allData);
+                    // console.log(allData)
+                    // console.log("befor publishing to kafka")
+                    kafka.publish(allData);
+                }
+                
+
             }
         }
         }

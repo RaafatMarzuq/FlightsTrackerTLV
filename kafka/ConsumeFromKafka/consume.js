@@ -35,17 +35,16 @@ consumer.on("ready", function(arg) {
   consumer.subscribe(topics);
   consumer.consume();
 });
-
-module.exports.consume = consume
-function consume(){
+module.exports.consume = ()=>{
   consumer.on("data", function(m) {
     // insert into MongoDB and Redis
     redis.FromKafkaToRedis(m.value);
     MongoDB.insertToMongoDB(m.value);
-    
+    console.log("data inserted to redis and mongo\n")
   });
 }
-consume();
+
+
 consumer.on('event.error', function(err) {
   console.error(err);
   process.exit(1);
