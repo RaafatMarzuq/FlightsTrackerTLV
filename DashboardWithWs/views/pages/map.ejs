@@ -26,8 +26,10 @@
 
             socket.on('flights counter', function (msg) {
                 // 
-                document.getElementById("arrFlightsNumber").innerText = msg['arrFlightsSum'] ;
-                document.getElementById("depFlightsNumber").innerText = msg['depFlightsSum'];
+                // alert(`arraival flights = ${msg.arrFlightsSum}`)
+                // alert(`departuer flights = ${msg.depFlightsSum}`)
+                document.getElementById("arrFlightsNumber").innerText = msg.arrFlightsSum;
+                document.getElementById("depFlightsNumber").innerText = msg.depFlightsSum;
             })
             
             
@@ -40,7 +42,7 @@
             if(msg ){
                 document.getElementById("arrFlightsData").innerText = msg;  
             }else{                
-                document.getElementById("arrFlightsData").innerText = "waiting for the prediction"  ;
+                document.getElementById("arrFlightsData").innerText = "No arrival filghts in the next 15 min'"  ;
             }
             })
             socket.on('flights data2', function (msg) {
@@ -48,7 +50,7 @@
             if(msg ){
                 document.getElementById("depFlightsData").innerText = msg;  
             }else{                
-                document.getElementById("depFlightsData").innerText = "waiting for the prediction"  ;
+                document.getElementById("depFlightsData").innerText = "No departure filghts in the next 15 min'"  ;
             }
             })
             

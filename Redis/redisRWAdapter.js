@@ -1,6 +1,3 @@
-// https://docs.redis.com/latest/rs/references/client_references/client_ioredis/
-// https://thisdavej.com/guides/redis-node/
-// https://helderesteves.com/the-crash-course-on-node-redis/
 const kafka = require("../kafka/ConsumeFromKafka/consume")
 const redis = require('ioredis')
 kafka.consume(); // start the consumer
@@ -20,23 +17,47 @@ const redisDb = new redis(conn);
 // Function that read data from Redis and publish it to channel "messages"
 async function FromRedisToDashboard(){
     // pull keys from Redis with "Scan" command.
+    
    let redisNowData = await redisDb.scan(0);
    let data=[];
    let values = redisNowData[1];
-
+    let snum =redisNowData[0];
     // Go all over the keys at Redis and get the values. 
+    do{
+        // console.log("data =" , data , "\nsnom = " , snum)
+    snum =parseInt(redisNowData[0]);
+    // console.log("values = " , values)
     for (let index = 0; index < values.length; index++){
-        if(values.length >= data.length){
+    
             let element = values[index];
             await redisDb.hgetall(element).then(dataForPublish => {
-                data.push(dataForPublish); // Push the values to data array and send it to Redis publisher
+                // console.log(dataForPublish)
+                if(!timeOfNow(dataForPublish.arrivalTime)){
+                    redisDb.del(dataForPublish.flightNumber)
+                }
+                else{
+                    if(!data.includes(dataForPublish)){
+                        data.push(dataForPublish); // Push the values to data array and send it to Redis publisher
+                    }
+                  
+
+                }
+
+
             });
-        }
+        
     }
+    redisNowData = await redisDb.scan(snum);
+    values = redisNowData[1];
+    
+    }while(snum != 0)
+     console.log("\nredis data.length = ",data.length)
+
+    // console.log("data =====",data ,"\ndat.length = ",data.length)
     return data;
 }
 
-
+// FromRedisToDashboard()
 
 // Function that write data from kafka to Redis
 async function FromKafkaToRedis(result){
@@ -46,7 +67,25 @@ async function FromKafkaToRedis(result){
     await redisDb.hmset(key,result); // insert data to Redis as hash-map
 }
 
+module.exports.flushAll = ()=>{
+    redisDb.flushdb("async");
+}
 
+function timeOfNow(timeStamp){
 
+    var time = timeStamp.split(":");
+    var hours = parseInt(time[0])*60
+    var min = parseInt(time[1])
+    
+    var today = new Date();
+
+    // console.log(today.getTime() ==inData )
+    var TimeInMin = ((parseInt(today.getHours()))*60 + parseInt(today.getMinutes()));
+    var dt =(hours+min)- TimeInMin;
+    if(dt > 0){
+        return true
+    }else return false ;
+
+}
 module.exports.FromKafkaToRedis= FromKafkaToRedis;
 module.exports.FromRedisToDashboard= FromRedisToDashboard;

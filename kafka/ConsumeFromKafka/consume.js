@@ -39,8 +39,8 @@ module.exports.consume = ()=>{
   consumer.on("data", function(m) {
     // insert into MongoDB and Redis
     redis.FromKafkaToRedis(m.value);
-    MongoDB.insertToMongoDB(m.value);
-    console.log("data inserted to redis and mongo\n")
+    // MongoDB.insertToMongoDB(m.value);
+    // console.log("data inserted to redis and mongo\n")
   });
 }
 

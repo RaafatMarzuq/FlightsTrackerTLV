@@ -18,7 +18,7 @@ function readCallback(){
         // check if the data is changed
         let dataForPublish = JSON.stringify(res);
         redisDb.publish(channel, dataForPublish );
-        setTimeout(readCallback, 5000); // 5 sec
+        setTimeout(readCallback, 10000); // 10 sec
     });
 }
 

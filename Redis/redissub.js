@@ -1,5 +1,4 @@
 const Redis = require('ioredis');
-const RedisAdapter = require('../Redis/redisRWAdapter')
 // From Dashboard to Redis
 
 // Connection details

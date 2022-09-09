@@ -1,5 +1,5 @@
 const { MongoClient, ServerApiVersion } = require('mongodb')
-const uri ="mongodb+srv://raafat:SFYUbijKa0ZkxBWv@cluster0.phfg8.mongodb.net/FlightsData?retryWrites=true&w=majority";
+const uri ="mongodb+srv://raafat:SFYUbijKa0ZkxBWv@cluster0.phfg8.mongodb.net/?retryWrites=true&w=majority";
 // const uri = "mongodb+srv://book:5exm81Qks81X7Vw9@cluster0.kpu9b.mongodb.net/FlightsData?retryWrites=true&w=majority";
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
 const { Parser } = require('json2csv');
@@ -36,7 +36,7 @@ function exportToCsv(){
       try {
         const parser = new Parser(opts);
         const csv = parser.parse(result);
-        var path='../bigML/MongoData.csv';
+        var path='../DashboardWithWs/MongoData.csv';
         fs.writeFile(path, csv, function(err,data) {
             if (err) {throw err;}
             

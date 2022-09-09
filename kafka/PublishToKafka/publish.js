@@ -29,7 +29,7 @@ producer.on("ready", function(arg) {
 
 producer.connect();
 
-module.exports.publish= function (msg){   
+module.exports.publish=async function (msg){   
   m=JSON.stringify(msg);
   producer.produce(topic, -1, genMessage(m), uuid.v4());     
 }
