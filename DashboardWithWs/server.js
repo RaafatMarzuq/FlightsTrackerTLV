@@ -32,32 +32,18 @@ async function updateNewData(){
    await dataFromRedis.then(async (res) => {
     
     var data = JSON.parse(res);
-     console.log(`data = `, data , "\ndata length = " , data.length)
-
     var flights_counter = getFlightsNumber(data);
-    
-    
- 
-    var airplains_location= getLngLat(data);
-    io.emit('flights location', airplains_location);
 
-    
-    
     var TLVweather = getTLVWeather(data,flights_counter.arrFlightsNumber);
-    io.emit('weather',TLVweather);
-      
-    
-   
-    // Updating new data by using socket.io
-    io.emit('flights counter', flights_counter);
-   
-    
+    var airplains_location= getLngLat(data);
     var new_data = await getPrediction(data)
-    console.log(`new data = `, new_data,"\nnew data length = " ,new_data.length)
-
     var arr_flights_string = getFlightsDataByNumber(new_data,flights_counter.arrFlightsNumber)
     var dep_flights_string = getFlightsDataByNumber(new_data,flights_counter.depFlightsNumber)
-    
+  
+     // Updating new data by using socket.io
+    io.emit('flights location', airplains_location);
+    io.emit('weather',TLVweather);
+    io.emit('flights counter', flights_counter); 
     io.emit('flights data1', arr_flights_string) 
     io.emit('flights data2', dep_flights_string) 
   
@@ -93,7 +79,6 @@ function getFlightsNumber(data){
 
 
   // i wont the flight that arrival in israel if(arrivalAirport == 'TLV' arrivalTime <= 15 )
-// if(departureAirport == 'TLV' departureTime <= 15)
   
   var arr_flights_sum=0,dep_flights_sum=0;
   var arr_flights_number=[],dep_flights_number = [];
@@ -101,14 +86,12 @@ function getFlightsNumber(data){
       if(data[index].departureAirport == 'TLV' ){
         if(getTime(data[index].departureTime)){
           dep_flights_sum++;
-          // console.log("getTime(data[index].departureTime: ",data[index],"\ndep_flights_sum++: ",dep_flights_sum)
        
           dep_flights_number.push(data[index].flightNumber)
         }
       }else if(data[index].arrivalAirport == 'TLV'){
         if(getTime(data[index].arrivalTime)){
           arr_flights_sum++;
-          // console.log("data[index].arrivalAirport: ",data[index],"\narr_flights_sum++: ",arr_flights_sum)
 
           arr_flights_number.push(data[index].flightNumber)
 
@@ -158,16 +141,15 @@ function getFlightsDataByNumber(data,flights){
 
       if (data[j].flightNumber == flights[i]) {
         const element = data[j];
-        console.log(`\nthis (flight  `,element.flightNumber)
 
-      // console.log(element)
-        // if((element.arrivalAirport == 'TLV' && getTime(element.arrivalTime))||(element.departureAirport == 'TLV' && getTime(element.departureTime))){
-          str += `Flight Number is ${element.flightNumber}
+                str += `Flight Number is ${element.flightNumber}
           Airline : ${element.airline}
           Departure Airport : ${element.departureAirport}
           Arrival Airport : ${element.arrivalAirport}
           Departure Weahter : ${element.departureWeahter}
           Arrival Weather : ${element.arrivalWeather}
+          Departure Time : ${element.departureTime}
+          Arrival Time : ${element.arrivalTime}         
           The flight will be : ${element.arrivalStatus}
           
           `;
@@ -230,13 +212,10 @@ function sleep(ms) {
 }
 
 io.on('connection', (socket) => {
-  socket.on('get new model',  async(inputData)=>{
-    // bool =false;
-  //   Mongo.exportToCsv();
-  //  await BigML.createModel();
-    // bool =true;
-
-    // console.log(inputData)
+  socket.on('get new model',  async (inputData)=>{
+    Mongo.exportToCsv();
+   await BigML.createModel();
+  
 
      
   });

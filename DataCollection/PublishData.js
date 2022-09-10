@@ -87,7 +87,10 @@ async function publishAndStor() {
         
         console.log(`on_ground_flights =` ,on_ground_flights)
     }
+
     const arrTLV = shuffledArray.sort((a, b) => 0.5 - Math.random());
+    // console.log("arrTLV length = ", arrTLV.length)
+    let i = 0;
     for (let index = 0; index < arrTLV.length; index++) {
          const element = arrTLV[index];
          
@@ -168,7 +171,8 @@ async function publishAndStor() {
                             && allData.arrivalStatus && allData.typeOfFlight && allData.period) {
                             // sql.insertToDatabase(allData);
                             // console.log(allData)
-                            // console.log("befor publishing to kafka")
+                            i++;
+                           
                             
                             await kafka.publish(allData);
             
@@ -191,7 +195,7 @@ async function publishAndStor() {
 
 
 }
-
+console.log(i)
 
 setTimeout(publishAndStor, 30000)
 }

@@ -7,17 +7,12 @@ var fs = require('fs');
 
 
 async function insertToMongoDB(data){
-  // Connect to our MongoDB's collection
-  client.connect(err => {
-    if (err) throw err;
-    const collection = client.db("FlightsData").collection("flights");
-  });
-  // Connect + Insert to the MongoDB
+  /// Connect + Insert to the MongoDB
   client.connect(async function(err, db) {
     data = JSON.parse(data)
     if (err) throw err;
     var dbo = db.db("FlightsData");
-    dbo.collection("flights").insertOne(data, function(err, res) {
+     dbo.collection("flights").insertOne(data, function(err, res) {
       if (err) throw err;
     }); 
   });

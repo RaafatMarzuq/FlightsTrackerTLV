@@ -8,7 +8,7 @@ var bigml = require('bigml');
 var MODEL ='model/63125aa0969fe93080006042';
 
 // replace the username and the API KEY of your own
-function createModel(){
+async function createModel(){
  
   var connection = new bigml.BigML('RaafatMarzuq','2a5da361441e10eaee2258ad814e5f2d764181b0')
 
@@ -32,7 +32,7 @@ function createModel(){
           model.create(datasetInfo, function (error, modelInfo) {
             if (!error && modelInfo) {
               // console.log("predictionInput: "+JSON.stringify(modelInfo.resource))
-              // MODEL = modelInfo.resource;
+              MODEL = modelInfo.resource;
               console.log("\nModel number = " + modelInfo.resource);
             }
           

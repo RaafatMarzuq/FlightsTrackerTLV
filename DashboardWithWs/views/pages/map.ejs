@@ -235,6 +235,13 @@
 <div id="myMap" >
 
 </div>
+<button onclick="creatNewModel()" type="button">Get New Model (:</button>
+<script>
+    function creatNewModel(){
+        socket.emit("get new model", "new model" );
+        alert("A new prediction model is being created")
+    }
+</script>
 
 </body>
 </body>

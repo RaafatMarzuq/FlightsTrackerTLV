@@ -24,14 +24,11 @@ async function FromRedisToDashboard(){
     let snum =redisNowData[0];
     // Go all over the keys at Redis and get the values. 
     do{
-        // console.log("data =" , data , "\nsnom = " , snum)
+//   console.log("redisNowData =" , redisNowData)
     snum =parseInt(redisNowData[0]);
-    // console.log("values = " , values)
     for (let index = 0; index < values.length; index++){
-    
             let element = values[index];
             await redisDb.hgetall(element).then(dataForPublish => {
-                // console.log(dataForPublish)
                 if(!timeOfNow(dataForPublish.arrivalTime)){
                     redisDb.del(dataForPublish.flightNumber)
                 }
@@ -51,9 +48,8 @@ async function FromRedisToDashboard(){
     values = redisNowData[1];
     
     }while(snum != 0)
-     console.log("\nredis data.length = ",data.length)
 
-    // console.log("data =====",data ,"\ndat.length = ",data.length)
+    console.log("\ndats.length = ",data.length)
     return data;
 }
 
@@ -72,20 +68,23 @@ module.exports.flushAll = ()=>{
 }
 
 function timeOfNow(timeStamp){
-
-    var time = timeStamp.split(":");
-    var hours = parseInt(time[0])*60
-    var min = parseInt(time[1])
+    if(timeStamp.split(":")){
+        var time = timeStamp.split(":");
+        var hours = parseInt(time[0])*60
+        var min = parseInt(time[1])
+        
+        var today = new Date();
     
-    var today = new Date();
-
-    // console.log(today.getTime() ==inData )
-    var TimeInMin = ((parseInt(today.getHours()))*60 + parseInt(today.getMinutes()));
-    var dt =(hours+min)- TimeInMin;
-    if(dt > 0){
-        return true
-    }else return false ;
-
+        // console.log(today.getTime() ==inData )
+        var TimeInMin = ((parseInt(today.getHours()))*60 + parseInt(today.getMinutes()));
+        var dt =(hours+min)- TimeInMin;
+        if(dt > 0){
+            return true
+        }else return false ;
+    
+    }
+    return false;
+  
 }
 module.exports.FromKafkaToRedis= FromKafkaToRedis;
 module.exports.FromRedisToDashboard= FromRedisToDashboard;
