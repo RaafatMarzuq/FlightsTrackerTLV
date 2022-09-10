@@ -5,7 +5,7 @@
 
 
 var bigml = require('bigml');
-var MODEL ='model/63125aa0969fe93080006042';
+var MODEL ='model/631c680abf85ee523b0027db';
 
 // replace the username and the API KEY of your own
 async function createModel(){
