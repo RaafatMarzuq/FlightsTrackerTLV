@@ -49,11 +49,9 @@ async function FromRedisToDashboard(){
     
     }while(snum != 0)
 
-    console.log("\ndats.length = ",data.length)
     return data;
 }
 
-// FromRedisToDashboard()
 
 // Function that write data from kafka to Redis
 async function FromKafkaToRedis(result){

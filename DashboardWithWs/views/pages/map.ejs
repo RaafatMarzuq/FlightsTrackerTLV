@@ -7,9 +7,9 @@
 -->
 <html>
 
-<head>
+<head style="background-image: url(../pages/images/flight-tracking-software.jpg);">
     <title>מעק טיסות נתב"ג</title>
-    <meta charset="utf-8" />
+    <meta charset="utf-8"  />
     <script src="/socket.io/socket.io.js"></script>
     <script type="text/javascript">
         var socket = io.connect();
@@ -250,12 +250,9 @@
 
 </head>
 
-<body onload="setMap()">
+<body  onload="setMap()" >
 <div id="myMap" >
-
 </div>
-</body>
-
 <button class="button" onclick="creatNewModel()" type="button">Get New Model (:</button>
 <script>
     function creatNewModel(){
@@ -263,4 +260,6 @@
         alert("A new prediction model is being created")
     }
 </script>
-</div>
+</body>
+
+

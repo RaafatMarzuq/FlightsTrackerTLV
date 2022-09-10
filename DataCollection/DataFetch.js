@@ -21,8 +21,7 @@ function getDepartureFlightsTLV(){
     return new Promise ( res => {
         axios.get(`https://airlabs.co/api/v9/flights?dep_iata=TLV&_view=array&_fields=dep_iata,arr_iata,flight_iata&api_key=${process.env.FLIGHTS_ACCESS_KEY}`)
         .then(response => {
-           res(response)  
-                        // console.log(response.data)           
+           res(response)      
         }).catch(error => {
             console.log(error);
             res("")
@@ -51,28 +50,12 @@ function FlightsOnGround(){
     })
 
 }
-// FlightsOnGround();
-// function getFlights(){
-//     return new Promise ( res => {
-//         axios.get(`https://airlabs.co/api/v9/flights?dep_iata=TLV;arr_iata=TLV&_view=array&_fields=dep_iata,arr_iata,flight_iata&api_key=${process.env.FLIGHTS_ACCESS_KEY}`)
-//         .then(response => {
-//             res(response)            
-//         }).catch(error => {
-//             console.log(error);
-//             res("")
-//         });
-//     })
 
-// }
 async function flightINFO(flightIata){
     if(flightIata){
     return new Promise ( res => {
         axios.get(`https://airlabs.co/api/v9/flight?flight_iata=${flightIata}&_view=array&_fields=flight_iata,flag,airline_icao,lat,lng,alt,dep_iata,arr_iata,status,airline_icao,dep_time,arr_time,delayed&api_key=${process.env.FLIGHTS_ACCESS_KEY}
-        `)
-// 
-   
-                    .then(response => {
-                        // console.log("flightINFO :" ,response.data.response,"in flight = " ,flightIata)
+        `).then(response => {
 
                          res(response)           
                     }).catch(error => {
@@ -87,19 +70,14 @@ async function flightINFO(flightIata){
 }
 function getWeather(countryCode){
     if(countryCode){
-        // try{
     return new Promise ( res => {
         
         axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${countryCode}&appid=9fa292766dbbd553e2ee998de37af7bc`)
         .then(response => {
-            // console.log("getWeather :" ,response.data.main,"in countryCode = " ,countryCode)
-            // const weatherData =0
-                    // if(response){
             const temperatureK = response.data.main.temp;
             // temperature in celsius
              weatherData = (temperatureK - 273.15).toFixed(2) ;
                 // }
-            // console.log(weatherData)
             res(weatherData)
         
             }).catch(error => {
@@ -154,19 +132,13 @@ function getPeriod(){
                 });
                
             });
-            
-            
-        
+  
 }
 function getCity(city,c){
     if(city,c){
     return new Promise ( res => { 
         axios.get(`https://airlabs.co/api/v9/cities?city_code=${city},${c}&_fields=name,lat,lng&api_key=${process.env.FLIGHTS_ACCESS_KEY}
         `).then(response => {
-            // console.log("getCity: " , response.data.response)
-            
-
-            // https://airlabs.co/api/v9/cities?city_code=DME&_fields=name,lat,lng&api_key=fce1ca3b-8de1-41ac-97cb-7328a44b793e
            res(response.data.response)
     }).catch(error => {
         console.log("error getCity");
@@ -176,7 +148,7 @@ function getCity(city,c){
 }
 }
 
-// console.log( getTime("2021-07-22 22:53"))
+
 function getTime(timeStamp){
     var time = timeStamp.trim().split(/\s+/)[1].split(":");
     var hours = parseInt(time[0])*60
@@ -191,15 +163,10 @@ function getTime(timeStamp){
 
 }
 
-// FlightsOnGround()
-// flightINFO("FZ1628")
-// getPeriod().then(res => {console.log(res)})
+
 module.exports.getArrivalFlightsTLV = getArrivalFlightsTLV;
 module.exports.getDepartureFlightsTLV = getDepartureFlightsTLV;
-
-// module.exports.getTime = getTime;
 module.exports.getCity = getCity;
-// module.exports.getFlights = getFlights;
 module.exports.getWeather = getWeather;
 module.exports.flightINFO= flightINFO;
 module.exports.getPeriod =  getPeriod;

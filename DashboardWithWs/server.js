@@ -6,16 +6,9 @@ const redisPub = require('../Redis/redispub');
 // const publishData = require('../DataCollection/PublishData')
 const Mongo= require('../MongoDB/MongoDB')
 const BigML= require('../bigML/bml');
-// const { getTime } = require('../DataCollection/DataFetch');
 const port=3000;
-// publishData.apiData();
-// apiData()
-// function apiData(){
-//   publishData.apiData();
-//   sleep(10000)
 
-// }
-
+// publishData;
 
 
 
@@ -23,10 +16,10 @@ const port=3000;
 app.use(express.static('public'))
 app.set('view engine', 'ejs')
 redisPub;
-var bool =true;
+
 // Function that sending the data to dashboard
 async function updateNewData(){
-  // if(bool){
+  
   // taking the data from redis
   var dataFromRedis= redisSub.getData();
    await dataFromRedis.then(async (res) => {
@@ -48,7 +41,7 @@ async function updateNewData(){
     io.emit('flights data2', dep_flights_string) 
   
   });
-// }
+
 
   setTimeout(updateNewData,30000);
 }
@@ -153,12 +146,9 @@ function getFlightsDataByNumber(data,flights){
           The flight will be : ${element.arrivalStatus}
           
           `;
-    // }
+  
    
-  } else{
-      // console.log(`\nthis (i = ${i}) fligh dont get card: `)
-
-    }
+  }
     }
   }
      return str;
